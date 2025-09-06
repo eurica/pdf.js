@@ -759,6 +759,44 @@ const PDFViewerApplication = {
         );
       };
     }
+
+    // Initialize text layer opacity slider
+    this._initializeTextOpacitySlider();
+  },
+
+  _initializeTextOpacitySlider() {
+    const slider = document.getElementById("opacityRange");
+    const valueDisplay = document.getElementById("opacityValue");
+    
+    if (!slider || !valueDisplay) {
+      return;
+    }
+
+    // Set initial opacity to 0% (default)
+    this._updateTextLayerOpacity(0);
+
+    slider.addEventListener("input", (event) => {
+      const value = parseInt(event.target.value);
+      this._updateTextLayerOpacity(value);
+      valueDisplay.textContent = `${value}%`;
+    });
+  },
+
+  _updateTextLayerOpacity(opacity) {
+    // Convert percentage to decimal (0-1)
+    const opacityValue = opacity / 100;
+    
+    // Apply color opacity to all text layer spans
+    const textLayerSpans = document.querySelectorAll(".textLayer span");
+    textLayerSpans.forEach(span => {
+      if (opacityValue === 0) {
+        // Completely transparent
+        span.style.color = "transparent";
+      } else {
+        // Use rgba to control color opacity
+        span.style.color = `rgba(0, 0, 0, ${opacityValue})`;
+      }
+    });
   },
 
   async run(config) {
