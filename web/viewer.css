@@ -326,9 +326,14 @@ body {
 #viewerContainer {
   overflow: auto;
   position: absolute;
-  inset: var(--toolbar-height) 0 0;
+  inset: 0 0 0;
   outline: none;
   z-index: 0;
+  transition: top 0.3s ease-in-out;
+}
+
+#toolbarContainer:not(.toolbar-visible) ~ #viewerContainer {
+  top: 0;
 }
 
 #viewerContainer:not(.pdfPresentationMode) {
@@ -1571,6 +1576,12 @@ dialog :link {
   background-color: var(--toolbar-bg-color);
   box-shadow: var(--toolbar-box-shadow);
   border-bottom: var(--toolbar-border-bottom);
+  transform: translateY(-100%);
+  transition: transform 0.3s ease-in-out;
+
+  &.toolbar-visible {
+    transform: translateY(0);
+  }
 
   #toolbarViewer {
     width: 100%;

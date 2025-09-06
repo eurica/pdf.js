@@ -2826,9 +2826,21 @@ function closeEditorUndoBar(evt) {
   }
 }
 
+function closeMainToolbar(evt) {
+  const toolbarContainer = document.getElementById("toolbarContainer");
+  if (!toolbarContainer?.classList.contains("toolbar-visible")) {
+    return;
+  }
+  // Hide toolbar if clicking outside of it
+  if (!toolbarContainer.contains(evt.target)) {
+    toolbarContainer.classList.remove("toolbar-visible");
+  }
+}
+
 function onClick(evt) {
   closeSecondaryToolbar.call(this, evt);
   closeEditorUndoBar.call(this, evt);
+  closeMainToolbar.call(this, evt);
 }
 
 function onKeyUp(evt) {
@@ -2998,6 +3010,20 @@ function onKeyDown(evt) {
     // Make sure that the secondary toolbar is closed when Escape is pressed.
     if (evt.keyCode !== /* Esc = */ 27) {
       return;
+    }
+  }
+
+  // Handle Escape key for toolbar visibility
+  if (cmd === 0 && evt.keyCode === /* Esc = */ 27) {
+    const toolbarContainer = document.getElementById("toolbarContainer");
+    if (toolbarContainer) {
+      const isVisible = toolbarContainer.classList.contains("toolbar-visible");
+      if (isVisible) {
+        toolbarContainer.classList.remove("toolbar-visible");
+      } else {
+        toolbarContainer.classList.add("toolbar-visible");
+      }
+      handled = true;
     }
   }
 
