@@ -1235,7 +1235,7 @@ describe("PDF viewer", () => {
 
     beforeEach(async () => {
       const baseURL = new URL(global.integrationBaseUrl);
-      const url = `${baseURL.origin}/build/generic/web/compressed.tracemonkey-pldi-09.pdf`;
+      const url = `${baseURL.origin}/build/generic/web/ocr-receipts.pdf`;
       pages = await loadAndWait(
         encodeURIComponent(url),
         ".textLayer .endOfContent"
@@ -1253,7 +1253,7 @@ describe("PDF viewer", () => {
 
           expect(filename)
             .withContext(`In ${browserName}`)
-            .toBe("compressed.tracemonkey-pldi-09.pdf");
+            .toBe("ocr-receipts.pdf");
         })
       );
     });

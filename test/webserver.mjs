@@ -53,7 +53,7 @@ class WebServer {
     this.cacheExpirationTime = cacheExpirationTime || 0;
     this.disableRangeRequests = false;
     this.hooks = {
-      GET: [crossOriginHandler, redirectHandler],
+      GET: [rootRedirectHandler, crossOriginHandler, redirectHandler],
       POST: [],
     };
   }
@@ -350,6 +350,17 @@ class WebServer {
     const extension = path.extname(fileURL.pathname).toLowerCase();
     return MIME_TYPES[extension] || DEFAULT_MIME_TYPE;
   }
+}
+
+// Redirect root path to the PDF.js viewer
+function rootRedirectHandler(url, request, response) {
+  if (url.pathname === "/") {
+    response.setHeader("Location", "/web/viewer.html");
+    response.writeHead(302);
+    response.end("Redirected to PDF.js viewer", "utf8");
+    return true;
+  }
+  return false;
 }
 
 // This supports the "Cross-origin" test in test/unit/api_spec.js
